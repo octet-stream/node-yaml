@@ -43,10 +43,9 @@ Parse and write YAML to file.
 ```coffee
 	yaml = require 'node-yaml'
 
-	data = """
+	data =
 		foo: foo
 		bar: bar
-	"""
 
 	yaml.write 'path/to/file.yaml', data, (err) -> throw err if err
 ```
