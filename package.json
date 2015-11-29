@@ -1,0 +1,27 @@
+{
+  "name": "node-yaml",
+  "version": "0.1.0",
+  "description": "A wrapper for js-yaml parser",
+  "keywirds": [
+    "wrapper",
+    "yaml",
+    "parser",
+    "serializer",
+    "node",
+    "nodejs"
+  ],
+  "main": "index.js",
+  "author": "Nick K.",
+  "license": "MIT",
+  "dependencies": {
+    "iced-runtime": "^1.0.3",
+    "js-yaml": "^3.4.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/octet-stream/node-yaml.git"
+  },
+  "bugs": {
+    "url": "https://github.com/octet-stream/node-yaml/issues"
+  }
+}
