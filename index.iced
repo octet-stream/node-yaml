@@ -6,7 +6,7 @@ yaml = require 'js-yaml'
 
 PARSER_SCHEMA =
 	defaultSafe: yaml.DEFAULT_SAFE_SCHEMA
-	defaultFull:yaml.DEFAULT_FULL_SCHEMA
+	defaultFull: yaml.DEFAULT_FULL_SCHEMA
 	failsafe: yaml.FAILSAFE_SCHEMA
 	json: yaml.JSON_SCHEMA
 	core: yaml.CORE_SCHEMA
@@ -25,7 +25,7 @@ normalizePath = (sPath) ->
 	return sPath
 
 ###
-# Parse yaml
+# Parse YAML
 # 
 # @param string sString YAML string to parse
 # @param object|null oOptions options for parser:
@@ -53,11 +53,11 @@ exports.dump = dump = (oJson, oOptions = null) ->
 ###
 # Read and parse YAML file
 # 
-# @param string sPath Path to YAML file (It can be provided without extname)
+# @param string|integer mPath Path to YAML file (It can be provided without extname) or file descriptor
 # @param null|string|object mOptions
 # @param Callback
 ###
-exports.read = read = (sPath, mOptions, cb) ->
+exports.read = read = (mPath, mOptions, cb) ->
 	if typeof mOptions is 'function'
 		cb = mOptions
 	else if typeof mOptions is 'string'
@@ -66,8 +66,8 @@ exports.read = read = (sPath, mOptions, cb) ->
 		if mOptions.encoding?
 			encoding = mOptions.encoding
 			delete mOptions.encoding
-	filename = normalizePath sPath
-	await fs.readFile filename, encoding, defer err, mData
+	mPath = normalizePath mPath unless typeof mPath is 'number'
+	await fs.readFile mPath, encoding, defer err, mData
 	return cb err if err?
 	try
 		mData = parse mData, mOptions
@@ -80,15 +80,15 @@ exports.read = read = (sPath, mOptions, cb) ->
 # 
 # @return JSON
 ###
-exports.readSync = readSync = (sPath, mOptions = null) ->
+exports.readSync = readSync = (mPath, mOptions = null) ->
 	if typeof mOptions is 'string'
 		[encoding, mOptions] = [mOptions, null]
 	else if mOptions? and typeof mOptions is 'object' and Array.isArray isnt yes
 		if mOptions.encoding?
 			encoding = mOptions.encoding
 			delete mOptions.encoding
-	filename = normalizePath sPath
-	mData = fs.readFileSync filename, encoding
+	mPath = normalizePath mPath unless typeof mPath is 'number'
+	mData = fs.readFileSync mPath, encoding
 	mData = parse mData, mOptions
 	return mData
 ###
@@ -99,7 +99,7 @@ exports.readSync = readSync = (sPath, mOptions = null) ->
 # @param null|string|options mOptions
 # @param Callback
 ###
-exports.write = write = (sPath, mData = '', mOptions = null, cb) ->
+exports.write = write = (mPath, mData = '', mOptions = null, cb) ->
 	if typeof mOptions is 'function'
 		cb = mOptions
 	else if typeof mOptions is 'string'
@@ -112,7 +112,7 @@ exports.write = write = (sPath, mData = '', mOptions = null, cb) ->
 		mData = dump mData, mOptions
 	catch e
 		return cb e
-	await fs.writeFile sPath, mData, encoding, defer err
+	await fs.writeFile mPath, mData, encoding, defer err
 	return cb err if err?
 	cb null
 
@@ -121,7 +121,7 @@ exports.write = write = (sPath, mData = '', mOptions = null, cb) ->
 # 
 # @return Returns null if file has successfully written
 ###
-exports.writeSync = writeSync = (sPath, mData = '', mOptions = null, cb) ->
+exports.writeSync = writeSync = (mPath, mData = '', mOptions = null, cb) ->
 	if typeof mOptions is 'string'
 		[encoding, mOptions] = [mOptions, null]
 	else if mOptions? and typeof mOptions is 'object' and Array.isArray isnt yes
@@ -129,7 +129,7 @@ exports.writeSync = writeSync = (sPath, mData = '', mOptions = null, cb) ->
 			encoding = mOptions.encoding
 			delete mOptions.encoding
 	mData = dump mData
-	fs.writeFileSync sPath, mData, encoding
+	fs.writeFileSync mPath, mData, encoding
 	return null
 
 # Experemental

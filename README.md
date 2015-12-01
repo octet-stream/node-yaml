@@ -16,15 +16,20 @@ You can install this module using NPM:
 
 Read and parse YAML file.
 
-* string file Path to file
+* file Path to file or file descriptor
 * null|string|object Options:
 	* encoding String | Null default = null
-	* schema More information about this options [here](https://github.com/nodeca/js-yaml#safeload-string---options-).
+	* [string] schema - specifies a schema to use. More information about this option [here](https://github.com/nodeca/js-yaml#safeload-string---options-).
+		* defaultSafe - all supported YAML types, without unsafe ones
+		* defaultFull - all supported YAML types
+		* failsafe - only strings, arrays and plain objects
+		* json - all JSON-supported types
+		* core - same as JSON_SCHEMA
 
 ```coffee
 	yaml = require 'node-yaml'
 
-	yaml.read 'path/to/file.yaml', (err, data) ->
+	yaml.read 'path/to/file.yaml', encoding: 'utf8', schema: 'defaultSafe', (err, data) ->
 		if err
 			throw err
 		console.log data
@@ -44,8 +49,8 @@ Parse and write YAML to file.
 	yaml = require 'node-yaml'
 
 	data =
-		foo: foo
-		bar: bar
+		"foo": "foo"
+		"bar": "bar"
 
 	yaml.write 'path/to/file.yaml', data, (err) -> throw err if err
 ```
@@ -53,3 +58,36 @@ Parse and write YAML to file.
 ### yaml.writeSync(file, data[, options])
 
 Synchronous version of **yaml.write**. Returns null if file has successfully written.
+
+### yaml.parse(string[, options])
+
+Parse YAML.
+
+* string - YAML string to parse
+* options:
+	* [string] schema
+
+```coffee
+	yaml = require 'node-yaml'
+
+	data = """
+		foo: foo
+		bar: bar
+	"""
+
+	console.log yaml.dump data
+```
+
+### yaml.dump(json[, options])
+
+Convert JSON into YAML.
+
+```coffee
+	yaml = require 'node-yaml'
+
+	data =
+		"foo": "foo"
+		"bar": "bar"
+
+	console.log yaml.dump data
+```
