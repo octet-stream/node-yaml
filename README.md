@@ -75,7 +75,7 @@ Parse YAML.
 		bar: bar
 	"""
 
-	console.log yaml.dump data
+	console.log yaml.parse data
 ```
 
 ### yaml.dump(json[, options])
