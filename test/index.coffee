@@ -4,37 +4,52 @@ COLOR_RED = '\x1B[0;31m'
 fs = require 'fs'
 yaml = require '../index'
 
+sexyType = new yaml.Type '!sexy',
+	kind: 'sequence', # See node kinds in YAML spec: http://www.yaml.org/spec/1.2/spec.html#kind//
+	construct: (data) -> data.map (string) -> "sexy #{string}"
+sexySchema = yaml.createSchema [sexyType]
+# console.log sexyType
+# console.log sexySchema
+
 # Asynchronous method:
-yaml.read "#{__dirname}/file", encoding: 'utf8', schema: 'defaultFull', (err, data) ->
+yaml.read "#{__dirname}/custom-schema", schema: sexySchema, (err, data) ->
 	if err
-		console.log "!ERR: #{err.message}"
-		console.log "!ERR: #{err.errno}"
-		console.log "!ERR: #{err.stack}"
+		console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.message}"
+		console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.errno}" if err.errno
+		console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.stack}"
 		return
 	console.log data
 
+# Synchronous method:
 try
-	# Synchronous method:
 	fd = fs.openSync "#{__dirname}/file.yml", 'r' # Get fd :)
 	console.log "File descriptor: #{fd}"
-	console.log 'Read file by file descriptor:'
-	console.log yaml.readSync fd
+	console.log 'Reading file by file descriptor:'
+	console.log yaml.readSync fd, encoding: 'utf8', schema: yaml.schema.defaultSafe, foo: 'foo'
 catch e
 	console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.message}"
-	console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.errno}"
+	console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.errno}" if err.errno
 	console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.stack}"
 
 console.log ''
 console.log 'Asynchronous method:'
 
-# Uncomment for running another tests
+# Uncomment for run another tests
+# console.log '\nTesting yaml.write and yaml.writeSync methods\n'
 # data =
 # 	name: 'Jason Smith'
 # 	career: 'DBA'
-# yaml.write 'out.yml', data, (err) ->
+# yaml.write 'async-out.yml', data, (err) ->
 # 	if err
-# 		console.log "!ERR: #{err.message}"
-# 		console.log "!ERR: #{err.errno}"
-# 		console.log "!ERR: #{err.stack}"
-# 	console.log 'Done!'
-# console.log 'Testing write method.'
+# 		console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.message}"
+# 		console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.errno}" if err.errno
+# 		console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.stack}"
+# 	console.log 'Asynchronouts write done.'
+
+# try
+# 	yaml.writeSync 'sync-out.yaml', data
+# 	console.log 'Synchronous read done.'
+# catch e
+# 	console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.message}"
+# 	console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.errno}" if err.errno
+# 	console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.stack}"

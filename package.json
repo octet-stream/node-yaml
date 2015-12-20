@@ -1,6 +1,6 @@
 {
   "name": "node-yaml",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "A wrapper for js-yaml parser",
   "keywords": [
     "wrapper",

@@ -4,7 +4,7 @@ fs = require 'fs'
 path = require 'path'
 yaml = require 'js-yaml'
 
-PARSER_SCHEMA =
+exports.schema = PARSER_SCHEMA =
 	defaultSafe: yaml.DEFAULT_SAFE_SCHEMA
 	defaultFull: yaml.DEFAULT_FULL_SCHEMA
 	failsafe: yaml.FAILSAFE_SCHEMA
@@ -25,18 +25,37 @@ normalizePath = (sPath) ->
 	return sPath
 
 ###
+# Normalize options
+# 
+# @param mixed mOptions
+# 
+# @return object
+###
+normalizeOptions = (mOptions) ->
+	unless mOptions?
+		return encoding: 'utf8', schema: PARSER_SCHEMA.defaultSafe
+
+	return switch typeof mOptions
+		when 'string'
+			encoding: mOptions
+			schema: PARSER_SCHEMA.defaultSafe
+		when 'object'
+			mOptions.encoding or= 'utf8'
+			# mOptions.schema or= PARSER_SCHEMA.defaultSafe
+			mOptions.schema = if typeof mOptions.schema is 'string' then PARSER_SCHEMA[mOptions.schema] else mOptions.schema or PARSER_SCHEMA.defaultSafe
+			mOptions
+
+###
 # Parse YAML
 # 
 # @param string sString YAML string to parse
 # @param object|null oOptions options for parser:
 # 	- schema: object Schema. More information here: https://github.com/nodeca/js-yaml#safeload-string---options-
-# note: defaultSafe schema used by default because is that recomended loading way.
+# Note: defaultSafe schema used by default because is that recomended loading way.
 # 
 # @return JSON
 ###
 exports.parse = parse = (sString, oOptions = null) ->
-	if oOptions?
-		oOptions.schema = if Object.keys(oOptions).length > 0 then PARSER_SCHEMA[oOptions.schema] else PARSER_SCHEMA['defaultSafe']
 	return yaml.load sString, oOptions
 
 ###
@@ -47,8 +66,6 @@ exports.parse = parse = (sString, oOptions = null) ->
 # @return string YAML
 ###
 exports.dump = dump = (oJson, oOptions = null) ->
-	if oOptions?
-		oOptions.schema = if Object.keys(oOptions).length > 0 then PARSER_SCHEMA[oOptions.schema] else PARSER_SCHEMA['defaultSafe']
 	return yaml.dump oJson, oOptions
 ###
 # Read and parse YAML file
@@ -57,17 +74,12 @@ exports.dump = dump = (oJson, oOptions = null) ->
 # @param null|string|object mOptions
 # @param Callback
 ###
-exports.read = read = (mPath, mOptions, cb) ->
+exports.read = read = (mPath, mOptions = null, cb) ->
 	if typeof mOptions is 'function'
-		cb = mOptions
-	else if typeof mOptions is 'string'
-		[encoding, mOptions] = [mOptions, null]
-	else if typeof mOptions is 'object' and Array.isArray isnt yes
-		if mOptions.encoding?
-			encoding = mOptions.encoding
-			delete mOptions.encoding
+		[cb, mOptions] = [mOptions, null]
+	mOptions = normalizeOptions mOptions
 	mPath = normalizePath mPath unless typeof mPath is 'number'
-	await fs.readFile mPath, encoding, defer err, mData
+	await fs.readFile mPath, mOptions.encoding or null, defer err, mData
 	return cb err if err?
 	try
 		mData = parse mData, mOptions
@@ -81,14 +93,9 @@ exports.read = read = (mPath, mOptions, cb) ->
 # @return JSON
 ###
 exports.readSync = readSync = (mPath, mOptions = null) ->
-	if typeof mOptions is 'string'
-		[encoding, mOptions] = [mOptions, null]
-	else if mOptions? and typeof mOptions is 'object' and Array.isArray isnt yes
-		if mOptions.encoding?
-			encoding = mOptions.encoding
-			delete mOptions.encoding
+	mOptions = normalizeOptions mOptions
 	mPath = normalizePath mPath unless typeof mPath is 'number'
-	mData = fs.readFileSync mPath, encoding
+	mData = fs.readFileSync mPath, mOptions.encoding or null
 	mData = parse mData, mOptions
 	return mData
 ###
@@ -101,18 +108,13 @@ exports.readSync = readSync = (mPath, mOptions = null) ->
 ###
 exports.write = write = (mPath, mData = '', mOptions = null, cb) ->
 	if typeof mOptions is 'function'
-		cb = mOptions
-	else if typeof mOptions is 'string'
-		[encoding, mOptions] = [mOptions, null]
-	else if typeof mOptions is 'object' and Array.isArray isnt yes
-		if mOptions.encoding?
-			encoding = mOptions.encoding
-			delete mOptions.encoding
+		[cb, mOptions] = [mOptions, null]
+	mOptions = normalizeOptions mOptions
 	try
 		mData = dump mData, mOptions
 	catch e
 		return cb e
-	await fs.writeFile mPath, mData, encoding, defer err
+	await fs.writeFile mPath, mData, mOptions.encoding or null, defer err
 	return cb err if err?
 	cb null
 
@@ -121,16 +123,14 @@ exports.write = write = (mPath, mData = '', mOptions = null, cb) ->
 # 
 # @return Returns null if file has successfully written
 ###
-exports.writeSync = writeSync = (mPath, mData = '', mOptions = null, cb) ->
-	if typeof mOptions is 'string'
-		[encoding, mOptions] = [mOptions, null]
-	else if mOptions? and typeof mOptions is 'object' and Array.isArray isnt yes
-		if mOptions.encoding?
-			encoding = mOptions.encoding
-			delete mOptions.encoding
+exports.writeSync = writeSync = (mPath, mData = '', mOptions = null) ->
+	mOptions = normalizeOptions mOptions
 	mData = dump mData
-	fs.writeFileSync mPath, mData, encoding
+	fs.writeFileSync mPath, mData, mOptions.encoding or null
 	return null
 
-# Experemental
-exports.Schema = yaml.Schema
+# Create custom type
+exports.Type = yaml.Type
+
+# Create custon schema
+exports.createSchema = yaml.Schema.create
