@@ -18,7 +18,7 @@ Read and parse YAML file.
 
 * file Path to file or file descriptor
 * null|string|object Options:
-	* [string] encoding (default = null)
+	* [string] encoding (default = utf8)
 	* [object] schema - specifies a schema to use. More information about this option [here](https://github.com/nodeca/js-yaml#safeload-string---options-) (default - defaultSafe).
 		* defaultSafe - all supported YAML types, without unsafe ones
 		* defaultFull - all supported YAML types
@@ -56,7 +56,7 @@ Parse and write YAML to file.
 		"foo": "foo"
 		"bar": "bar"
 
-	yaml.write 'path/to/file.yaml', 'utf8', data, (err) -> throw err if err
+	yaml.write 'path/to/file.yaml', data, 'utf8', (err) -> throw err if err
 ```
 
 ### yaml.writeSync(file, data[, options])
