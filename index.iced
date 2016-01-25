@@ -39,18 +39,20 @@ normalizeOptions = (mOptions) ->
   unless mOptions?
     return encoding: 'utf8', schema: PARSER_SCHEMA.defaultSafe
 
-  return switch typeof mOptions
+  mOptions = switch typeof mOptions
     when 'string'
       encoding: mOptions
       schema: PARSER_SCHEMA.defaultSafe
     when 'object'
       mOptions.encoding or= 'utf8'
-      # mOptions.schema or= PARSER_SCHEMA.defaultSafe
-      mOptions.schema = if typeof mOptions.schema is 'string'
-        PARSER_SCHEMA[mOptions.schema]
-      else
-        mOptions.schema or PARSER_SCHEMA.defaultSafe
+      mOptions.schema or= PARSER_SCHEMA.defaultSafe
+      # mOptions.schema = if typeof mOptions.schema is 'string'
+      #   PARSER_SCHEMA[mOptions.schema]
+      # else
+      #   mOptions.schema or PARSER_SCHEMA.defaultSafe
       mOptions
+  # console.log mOptions
+  return mOptions
 
 ###
 # Parse YAML

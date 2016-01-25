@@ -7,7 +7,7 @@ A wrapper for [js-yaml](https://github.com/nodeca/js-yaml) parser
 You can install this module using NPM:
 
 ```bash
-	npm install --save node-yaml
+  npm install --save node-yaml
 ```
 
 ## API
@@ -18,21 +18,24 @@ Read and parse YAML file.
 
 * file Path to file or file descriptor
 * null|string|object Options:
-	* [string] encoding (default = utf8)
-	* [object] schema - specifies a schema to use. More information about this option [here](https://github.com/nodeca/js-yaml#safeload-string---options-) (default - defaultSafe).
-		* defaultSafe - all supported YAML types, without unsafe ones
-		* defaultFull - all supported YAML types
-		* failsafe - only strings, arrays and plain objects
-		* json - all JSON-supported types
-		* core - same as json schema
+  * [string] encoding (default = utf8)
+  * [object] schema - specifies a schema to use. More information about this option [here](https://github.com/nodeca/js-yaml#safeload-string---options-) (default - defaultSafe).
+    * defaultSafe - all supported YAML types, without unsafe ones
+    * defaultFull - all supported YAML types
+    * failsafe - only strings, arrays and plain objects
+    * json - all JSON-supported types
+    * core - same as json schema
 
 ```coffee
-	yaml = require 'node-yaml'
+  yaml = require 'node-yaml'
 
-	yaml.read 'path/to/file.yaml', encoding: 'utf8', schema: yaml.schema.defaultSafe, (err, data) ->
-		if err
-			throw err
-		console.log data
+  yaml.read 'path/to/file.yaml',
+    encoding: 'utf8'
+    schema: yaml.schema.defaultSafe,
+    (err, data) ->
+      if err
+        throw err
+      console.log data
 ```
 
 **Note**: You also can use path without file extension (only for yaml.read and yaml.readSync).
@@ -50,13 +53,13 @@ Synchronous version of **yaml.read**. Returns the contents of the **file**
 Parse and write YAML to file.
 
 ```coffee
-	yaml = require 'node-yaml'
+  yaml = require 'node-yaml'
 
-	data =
-		"foo": "foo"
-		"bar": "bar"
+  data =
+    "foo": "foo"
+    "bar": "bar"
 
-	yaml.write 'path/to/file.yaml', data, 'utf8', (err) -> throw err if err
+  yaml.write 'path/to/file.yaml', data, 'utf8', (err) -> throw err if err
 ```
 
 ### yaml.writeSync(file, data[, options])
@@ -69,17 +72,17 @@ Parse YAML.
 
 * string - YAML string to parse
 * [object] options:
-	* [object] schema
+  * [object] schema
 
 ```coffee
-	yaml = require 'node-yaml'
+  yaml = require 'node-yaml'
 
-	data = """
-		foo: foo
-		bar: bar
-	"""
+  data = """
+    foo: foo
+    bar: bar
+  """
 
-	console.log yaml.parse data
+  console.log yaml.parse data
 ```
 
 ### yaml.dump(json[, options])
@@ -87,11 +90,11 @@ Parse YAML.
 Convert JSON into YAML.
 
 ```coffee
-	yaml = require 'node-yaml'
+  yaml = require 'node-yaml'
 
-	data =
-		"foo": "foo"
-		"bar": "bar"
+  data =
+    "foo": "foo"
+    "bar": "bar"
 
-	console.log yaml.dump data
+  console.log yaml.dump data
 ```

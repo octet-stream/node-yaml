@@ -12,20 +12,24 @@ sexySchema = yaml.createSchema [sexyType]
 # console.log sexySchema
 
 # Asynchronous method:
-yaml.read "#{__dirname}/custom-schema", schema: sexySchema, (err, data) ->
-  if err
-    console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.message}"
-    console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.errno}" if err.errno
-    console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.stack}"
-    return
-  console.log data
+yaml.read "#{__dirname}/custom-schema",
+  schema: sexySchema,
+  (err, data) ->
+    if err
+      console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.message}"
+      console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.errno}" if err.errno
+      console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{err.stack}"
+      return
+    console.log data
 
 # Synchronous method:
 try
   fd = fs.openSync "#{__dirname}/file.yml", 'r' # Get fd :)
   console.log "File descriptor: #{fd}"
   console.log 'Reading file by file descriptor:'
-  console.log yaml.readSync fd, encoding: 'utf8', schema: yaml.schema.defaultSafe, foo: 'foo'
+  console.log yaml.readSync fd,
+    encoding: 'utf8'
+    schema: yaml.schema.defaultSafe
 catch e
   console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.message}"
   console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.errno}" if err.errno
