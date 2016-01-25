@@ -1,6 +1,6 @@
 {
   "name": "node-yaml",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A wrapper for js-yaml parser",
   "keywords": [
     "wrapper",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "iced-runtime": "^1.0.3",
-    "js-yaml": "^3.4.6"
+    "js-yaml": "^3.5.2"
   },
   "repository": {
     "type": "git",
