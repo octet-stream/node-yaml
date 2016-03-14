@@ -40,26 +40,51 @@ Read and parse YAML file.
 
 **Note**: You also can use path without file extension (only for yaml.read and yaml.readSync).
 
-**Note**: All schemas now available via yaml.schema.SCHEMA (for example, yaml.schema.defaultSafe).
-
 **Note**: yaml.schema.defaultSafe schema used by default because is that recomended loading way.
+
+### yaml.readPromise(file[, options])
+
+This method return an instance of **Promise**.
+
+```coffee
+  {readPromise} = require 'node-yaml'
+
+  readPromise 'path/to/file.yaml'
+    .then (data) -> console.log data
+```
 
 ### yaml.readSync(file[, options])
 
-Synchronous version of **yaml.read**. Returns the contents of the **file**
+Synchronous version of **yaml.read**. Return the contents of the **file**
 
 ### yaml.write(file, data[, options], callback)
 
 Parse and write YAML to file.
 
 ```coffee
-  yaml = require 'node-yaml'
+  {write} = require 'node-yaml'
 
   data =
     "foo": "foo"
     "bar": "bar"
 
-  yaml.write 'path/to/file.yaml', data, 'utf8', (err) -> throw err if err
+  write 'path/to/file.yaml', data, 'utf8', (err) -> throw err if err
+```
+
+### yaml.writePromise(file, data[, options])
+
+```coffee
+  {writePromise} = require 'node-yaml'
+
+  data =
+    "foo": "foo"
+    "bar": "bar"
+
+  writePromise 'path/to/file.yaml', data
+    .then ->
+      # Do something.
+    .catch (err) ->
+      # I just don't know what went wrong.
 ```
 
 ### yaml.writeSync(file, data[, options])
@@ -75,14 +100,14 @@ Parse YAML.
   * [object] schema
 
 ```coffee
-  yaml = require 'node-yaml'
+  {parse} = require 'node-yaml'
 
   data = """
     foo: foo
     bar: bar
   """
 
-  console.log yaml.parse data
+  console.log parse data
 ```
 
 ### yaml.dump(json[, options])
@@ -90,11 +115,11 @@ Parse YAML.
 Convert JSON into YAML.
 
 ```coffee
-  yaml = require 'node-yaml'
+  {dump} = require 'node-yaml'
 
   data =
     "foo": "foo"
     "bar": "bar"
 
-  console.log yaml.dump data
+  console.log dump data
 ```
