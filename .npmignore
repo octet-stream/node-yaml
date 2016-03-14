@@ -4,3 +4,4 @@ test
 .git
 .gitignore
 index.iced
+npm-debug.log

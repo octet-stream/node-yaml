@@ -1,10 +1,12 @@
 'use strict'
 
+# Dependencies
 fs = require 'fs'
 path = require 'path'
 yaml = require 'js-yaml'
+Promise = require 'pinkie-promise'
 
-exports.schema = PARSER_SCHEMA =
+PARSER_SCHEMA =
   defaultSafe: yaml.DEFAULT_SAFE_SCHEMA
   defaultFull: yaml.DEFAULT_FULL_SCHEMA
   failsafe: yaml.FAILSAFE_SCHEMA
@@ -13,7 +15,7 @@ exports.schema = PARSER_SCHEMA =
 
 ###
 # Normalize path to YAML file
-# 
+# -
 # @param string sPath Path to YAML file
 ###
 normalizePath = (sPath) ->
@@ -26,13 +28,14 @@ normalizePath = (sPath) ->
     __basename = path.basename sFile, __extname
     if sBasename is __basename and __extname in YAML_EXT
       return sDirname + path.sep + sFile
+
   return sPath
 
 ###
 # Normalize options
-# 
+# -
 # @param mixed mOptions
-# 
+# -
 # @return object
 ###
 normalizeOptions = (mOptions) ->
@@ -46,46 +49,45 @@ normalizeOptions = (mOptions) ->
     when 'object'
       mOptions.encoding or= 'utf8'
       mOptions.schema or= PARSER_SCHEMA.defaultSafe
-      # mOptions.schema = if typeof mOptions.schema is 'string'
-      #   PARSER_SCHEMA[mOptions.schema]
-      # else
-      #   mOptions.schema or PARSER_SCHEMA.defaultSafe
       mOptions
-  # console.log mOptions
+
   return mOptions
 
 ###
 # Parse YAML
-# 
+# -
 # @param string sString YAML string to parse
 # @param object|null oOptions options for parser:
 #   - schema: object Schema.
-#     More information here: https://github.com/nodeca/js-yaml#safeload-string---options-
-# Note: defaultSafe schema used by default because is that recomended loading way.
-# 
-# @return JSON
+#     More information here:
+#        https://github.com/nodeca/js-yaml#safeload-string---options-
+#
+# Note: defaultSafe schema used by default
+# because is that recomended loading way.
+# -
+# @return object
 ###
-exports.parse = parse = (sString, oOptions = null) ->
+parse = (sString, oOptions = null) ->
   return yaml.load sString, oOptions
 
 ###
 # Convert JSON into YAML
 # 
-# @param object JSON to dump
+# @param object oJson
 # 
-# @return string YAML
+# @return string
 ###
-exports.dump = dump = (oJson, oOptions = null) ->
+dump = (oJson, oOptions = null) ->
   return yaml.dump oJson, oOptions
 
 ###
 # Read and parse YAML file
-# 
+# -
 # @param string|integer mPath Path to YAML file
 # @param null|string|object mOptions
-# @param Callback
+# @param callback
 ###
-exports.read = read = (mPath, mOptions = null, cb) ->
+read = (mPath, mOptions = null, cb) ->
   if typeof mOptions is 'function'
     [cb, mOptions] = [mOptions, null]
   mOptions = normalizeOptions mOptions
@@ -94,19 +96,21 @@ exports.read = read = (mPath, mOptions = null, cb) ->
   if err?
     cb err
     return
+
   try
     mData = parse mData, mOptions
   catch err
     cb err
     return
+
   cb null, mData
 
 ###
 # Synchronous version of yaml.read
-# 
+# -
 # @return JSON
 ###
-exports.readSync = readSync = (mPath, mOptions = null) ->
+readSync = (mPath, mOptions = null) ->
   mOptions = normalizeOptions mOptions
   mPath = normalizePath mPath unless typeof mPath is 'number'
   mData = fs.readFileSync mPath, mOptions.encoding or null
@@ -115,25 +119,28 @@ exports.readSync = readSync = (mPath, mOptions = null) ->
 
 ###
 # Parse and write YAML to file
-# 
+# -
 # @param string sPath Path to YAML file
 # @param string|Buffer Data to write
 # @param null|string|options mOptions
-# @param Callback
+# @param callback
 ###
-exports.write = write = (mPath, mData = '', mOptions = null, cb) ->
+write = (mPath, mData = '', mOptions = null, cb) ->
   if typeof mOptions is 'function'
     [cb, mOptions] = [mOptions, null]
   mOptions = normalizeOptions mOptions
+
   try
     mData = dump mData, mOptions
   catch err
     cb err
     return
+
   await fs.writeFile mPath, mData, mOptions.encoding or null, defer err
   if err?
     cb err
     return
+
   cb null
 
 ###
@@ -141,13 +148,39 @@ exports.write = write = (mPath, mData = '', mOptions = null, cb) ->
 # 
 # @return Return undefined when file has been successfully written
 ###
-exports.writeSync = writeSync = (mPath, mData = '', mOptions = null) ->
+writeSync = (mPath, mData = '', mOptions = null) ->
   mOptions = normalizeOptions mOptions
   mData = dump mData
   fs.writeFileSync mPath, mData, mOptions.encoding or null
 
-# Create custom type
-exports.Type = yaml.Type
+readPromise = (mPath, mOptions = null) ->
+  return new Promise (_res, _rej) ->
+    await read mPath, mOptions, defer err, mData
+    if err
+      _rej err
+      return
 
-# Create custon schema
-exports.createSchema = yaml.Schema.create
+    _res mData
+
+writePromise = (mPath, mData = '', mOptions = null) ->
+  return new Promise (_res, _rej) ->
+    await write mPath, mData, mOptions, defer err
+    if err
+      _rej err
+      return
+
+    _res mData
+
+# Exports
+module.exports =
+  Type: yaml.Type
+  createSchema: yaml.Schema.create
+  parse: parse
+  dump: dump
+  schema: PARSER_SCHEMA
+  read: read
+  readSync: readSync
+  readPromise: readPromise
+  write: write
+  writeSync: writeSync
+  writePromise: writePromise
