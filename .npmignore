@@ -1,7 +1,11 @@
 node_modules
 test
+test.*
 .DS_Store
 .git
 .gitignore
+.travis.yml
+coffeelint.json
 index.iced
+index.coffee
 npm-debug.log

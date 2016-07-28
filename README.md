@@ -12,7 +12,7 @@ You can install this module using NPM:
 
 ## API
 
-### yaml.read(file[, options], callback)
+### yaml.read(file[, options, callback])
 
 Read and parse YAML file.
 
@@ -46,6 +46,8 @@ Read and parse YAML file.
 
 This method return an instance of **Promise**.
 
+**DEPRECATED**: Use yaml.read without callback instead
+
 ```coffee
   {readPromise} = require 'node-yaml'
 
@@ -57,9 +59,20 @@ This method return an instance of **Promise**.
 
 Synchronous version of **yaml.read**. Return the contents of the **file**
 
-### yaml.write(file, data[, options], callback)
+### yaml.write(file, data[, options, callback])
 
 Parse and write YAML to file.
+
+* int|string file - Path to file or file descriptor
+* object data - Some data to write
+* null|string|object options:
+  * [string] encoding (default = utf8)
+  * [object] schema - specifies a schema to use. More information about this option [here](https://github.com/nodeca/js-yaml#safeload-string---options-) (default - defaultSafe).
+    * defaultSafe - all supported YAML types, without unsafe ones
+    * defaultFull - all supported YAML types
+    * failsafe - only strings, arrays and plain objects
+    * json - all JSON-supported types
+    * core - same as json schema
 
 ```coffee
   {write} = require 'node-yaml'
@@ -73,12 +86,16 @@ Parse and write YAML to file.
 
 ### yaml.writePromise(file, data[, options])
 
+This method return an instance of **Promise**.
+
+**DEPRECATED**: Use yaml.write without callback instead
+
 ```coffee
   {writePromise} = require 'node-yaml'
 
   data =
-    "foo": "foo"
-    "bar": "bar"
+    foo: "foo"
+    bar: "bar"
 
   writePromise 'path/to/file.yaml', data
     .then ->
@@ -89,7 +106,7 @@ Parse and write YAML to file.
 
 ### yaml.writeSync(file, data[, options])
 
-Synchronous version of **yaml.write**. Returns null if file has successfully written.
+Synchronous version of **yaml.write**.
 
 ### yaml.parse(string[, options])
 
@@ -118,8 +135,8 @@ Convert JSON into YAML.
   {dump} = require 'node-yaml'
 
   data =
-    "foo": "foo"
-    "bar": "bar"
+    foo: "foo"
+    bar: "bar"
 
   console.log dump data
 ```

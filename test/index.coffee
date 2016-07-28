@@ -10,9 +10,6 @@ sexyType = new yaml.Type '!sexy',
   construct: (data) -> data.map (string) -> "sexy #{string}"
 sexySchema = yaml.createSchema [sexyType]
 
-# console.log sexyType
-# console.log sexySchema
-
 # Asynchronous method:
 yaml.read "#{__dirname}/custom-schema",
   schema: sexySchema,
@@ -32,6 +29,7 @@ try
   console.log yaml.readSync fd,
     encoding: 'utf8'
     schema: yaml.schema.defaultSafe
+  console.log ''
 catch e
   console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.message}"
   console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.errno}" if err.errno
@@ -39,7 +37,7 @@ catch e
 
 
 # Reading with Promise
-yaml.readPromise 'file'
+yaml.readPromise "./file.yml"
   .then (mData) ->
     console.log ''
     console.log 'Reading with Promise:'
@@ -74,7 +72,7 @@ console.log 'Asynchronous methods:'
 #   console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.errno}" if err.errno
 #   console.log "#{COLOR_RED}!ERR#{COLOR_DEF}: #{e.stack}"
 
-# Writing with promise
+# # Writing with promise
 # yaml.writePromise 'promise-out.yaml', data
 #   .then ->
 #     console.log "Written with promise in promise-out.yaml"
