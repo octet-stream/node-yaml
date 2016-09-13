@@ -1,7 +1,7 @@
 co = require 'co'
 {readFileSync, writeFileSync, readdirSync} = require 'fs'
 {readFile, writeFile, readdir} = require 'co-fs'
-{dirname, basename, extname, sep, isAbsolute} = require 'path'
+{dirname, basename, extname, sep, isAbsolute, join} = require 'path'
 {parse, load, dump} = yaml = require 'js-yaml'
 
 PARSER_SCHEMA =
@@ -43,7 +43,8 @@ normalizePath = (filename) ->
 ###
 normalizePathSync = (filename) ->
   unless isAbsolute filename
-    filename = "#{PARENT_DIRNAME}/#{basename filename}"
+    filename = join PARENT_DIRNAME, filename
+
 
   base = basename filename
   dir = dirname filename
