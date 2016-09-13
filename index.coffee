@@ -22,7 +22,7 @@ PARENT_DIRNAME = dirname module.parent.filename
 ###
 normalizePath = (filename) ->
   unless isAbsolute filename
-    filename = "#{PARENT_DIRNAME}/#{basename filename}"
+    filename = join PARENT_DIRNAME, filename
 
   base = basename filename
   dir = dirname filename
@@ -44,7 +44,6 @@ normalizePath = (filename) ->
 normalizePathSync = (filename) ->
   unless isAbsolute filename
     filename = join PARENT_DIRNAME, filename
-
 
   base = basename filename
   dir = dirname filename
