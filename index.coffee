@@ -1,7 +1,7 @@
 co = require 'co'
 {readFileSync, writeFileSync, readdirSync} = require 'fs'
 {readFile, writeFile, readdir} = require 'co-fs'
-{dirname, basename, extname, sep, isAbsolute, join} = require 'path'
+{dirname, basename, extname, sep, isAbsolute, join, resolve} = require 'path'
 {parse, load, dump} = yaml = require 'js-yaml'
 
 PARSER_SCHEMA =
@@ -14,6 +14,7 @@ PARSER_SCHEMA =
 YAML_EXT = ['.yaml', '.yml']
 
 PARENT_DIRNAME = dirname module.parent.filename
+delete require.cache[__filename]
 
 ###
 # Normalize path to YAML file
@@ -22,7 +23,7 @@ PARENT_DIRNAME = dirname module.parent.filename
 ###
 normalizePath = (filename) ->
   unless isAbsolute filename
-    filename = join PARENT_DIRNAME, filename
+    filename = resolve PARENT_DIRNAME, filename
 
   base = basename filename
   dir = dirname filename
@@ -43,7 +44,7 @@ normalizePath = (filename) ->
 ###
 normalizePathSync = (filename) ->
   unless isAbsolute filename
-    filename = join PARENT_DIRNAME, filename
+    filename = resolve PARENT_DIRNAME, filename
 
   base = basename filename
   dir = dirname filename
