@@ -41,19 +41,6 @@ Read and parse YAML file.
 
 **Note**: yaml.schema.defaultSafe schema used by default because is that recomended loading way.
 
-### yaml.readPromise(file[, options])
-
-This method return an instance of **Promise**.
-
-**DEPRECATED**: Use yaml.read without callback instead
-
-```coffee
-  {readPromise} = require "node-yaml"
-
-  readPromise "path/to/file.yaml"
-    .then (data) -> console.log data
-```
-
 ### yaml.readSync(file[, options])
 
 Synchronous version of **yaml.read**. Return the contents of the **file**
@@ -81,26 +68,6 @@ Parse and write YAML to file.
     bar: "bar"
 
   write "path/to/file.yaml", data, "utf8", (err) -> throw err if err
-```
-
-### yaml.writePromise(file, data[, options])
-
-This method return an instance of **Promise**.
-
-**DEPRECATED**: Use yaml.write without callback instead
-
-```coffee
-  {writePromise} = require "node-yaml"
-
-  data =
-    foo: "foo"
-    bar: "bar"
-
-  writePromise "path/to/file.yaml", data
-    .then ->
-      # Do something.
-    .catch (err) ->
-      # I just don"t know what went wrong.
 ```
 
 ### yaml.writeSync(file, data[, options])
