@@ -1,8 +1,10 @@
-co = require 'co'
-{readFileSync, writeFileSync, readdirSync} = require 'fs'
-{readFile, writeFile, readdir} = require 'co-fs'
-{dirname, basename, extname, sep, isAbsolute, join, resolve} = require 'path'
-{parse, load, dump} = yaml = require 'js-yaml'
+co = require "co"
+junk = require "junk"
+
+{readFileSync, writeFileSync, readdirSync} = require "fs"
+{readFile, writeFile, readdir} = require "promise-fs"
+{dirname, basename, extname, isAbsolute, join, resolve} = require "path"
+{parse, load, dump} = yaml = require "js-yaml"
 
 PARSER_SCHEMA =
   defaultSafe: yaml.DEFAULT_SAFE_SCHEMA
@@ -11,15 +13,30 @@ PARSER_SCHEMA =
   json: yaml.JSON_SCHEMA
   core: yaml.CORE_SCHEMA
 
-YAML_EXT = ['.yaml', '.yml']
+YAML_EXT = [".yaml", ".yml"]
 
 PARENT_DIRNAME = dirname module.parent.filename
 delete require.cache[__filename]
+
+fulfill = (cb, fn) ->
+  return do fn unless typeof cb is "function"
+
+  onFulfilled = (res) -> cb null, res
+
+  onRejected = (err) -> cb err
+
+  promise = do fn
+
+  promise.then onFulfilled, onRejected
+
+  return
 
 ###
 # Normalize path to YAML file
 # 
 # @param string sPath Path to YAML file
+#
+# @api private
 ###
 normalizePath = (filename) ->
   unless isAbsolute filename
@@ -29,11 +46,13 @@ normalizePath = (filename) ->
   dir = dirname filename
 
   files = yield readdir dir
-  for file in files when file isnt '.DS_Store'
-    __extname = extname file
-    __basename = basename file, __extname
-    if base is __basename and __extname in YAML_EXT
-      return "#{dir}#{sep}#{file}"
+
+  for file in files when junk.not file
+    __ext = extname file
+    __base = basename file, __ext
+
+    if base is __base and __ext in YAML_EXT
+      return join dir, file
 
   return filename
 
@@ -41,6 +60,8 @@ normalizePath = (filename) ->
 # Normalize path to YAML file (Synchronously)
 # 
 # @param string sPath Path to YAML file
+#
+# @api private
 ###
 normalizePathSync = (filename) ->
   unless isAbsolute filename
@@ -50,11 +71,13 @@ normalizePathSync = (filename) ->
   dir = dirname filename
 
   files = readdirSync dir
-  for file in files when file isnt '.DS_Store'
-    __extname = extname file
-    __basename = basename file, __extname
-    if base is __basename and __extname in YAML_EXT
-      return "#{dir}#{sep}#{file}"
+
+  for file in files when junk.not file
+    __ext = extname file
+    __base = basename file, __ext
+
+    if base is __base and __ext in YAML_EXT
+      return join dir, file
 
   return filename
 
@@ -64,17 +87,19 @@ normalizePathSync = (filename) ->
 # @param string|object options
 # 
 # @return object
+#
+# @api private
 ###
 normalizeOptions = (options) ->
   unless options?
-    return encoding: 'utf8', schema: PARSER_SCHEMA.defaultSafe
+    return encoding: "utf8", schema: PARSER_SCHEMA.defaultSafe
 
   options = switch typeof options
-    when 'string'
+    when "string"
       encoding: options
       schema: PARSER_SCHEMA.defaultSafe
-    when 'object'
-      options.encoding or= 'utf8'
+    when "object"
+      options.encoding or= "utf8"
       options.schema or= PARSER_SCHEMA.defaultSafe
       options
 
@@ -87,13 +112,18 @@ normalizeOptions = (options) ->
 # @param null|object options
 #
 # @return Promise
+#
+# @api private
 ###
-readPromise = (filename, options = {}) ->
-  return co ->
-    filename = yield normalizePath filename unless typeof filename is 'number'
-    options = normalizeOptions options
-    content = yield readFile filename, options.encoding
-    return load content, options
+readPromise = (filename, options = {}) -> co ->
+  filename = yield normalizePath filename unless typeof filename is "number"
+
+  options = normalizeOptions options
+
+  content = yield readFile filename, options.encoding
+
+
+  return load content, options
 
 ###
 # Read and parse YAML file
@@ -104,16 +134,20 @@ readPromise = (filename, options = {}) ->
 # @param function cb
 ###
 read = (filename, options = {}, cb = null) ->
-  if typeof options is 'function'
+  if typeof options is "function"
     [cb, options] = [options, {}]
 
-  __promise = readPromise filename, options
-  unless typeof cb is 'function'
-    return __promise
+  # res = readPromise filename, options
+  
+  # return res unless typeof cb is "function"
 
-  __promise
-    .then (content) -> cb null, content
-    .catch (err) -> cb err
+  # onFulfilled = (content) -> cb null, content
+
+  # onRejected = (err) -> cb err
+
+  # res.then
+
+  return fulfill cb, -> readPromise filename, options
 
 ###
 # Synchronous version of yaml.read
@@ -122,21 +156,25 @@ read = (filename, options = {}, cb = null) ->
 ###
 readSync = (filename, options = {}) ->
   options = normalizeOptions options
-  filename = normalizePathSync filename unless typeof filename is 'number'
+  filename = normalizePathSync filename unless typeof filename is "number"
   content = readFileSync filename, options.encoding
   content = load content, options
   return content
 
 ###
 # Write some content to YAML file with Promise
+#
+# @api private
 ###
-writePromise = (filename, content, options = {}) ->
-  return co ->
-    filename = yield normalizePath filename unless typeof filename is 'number'
-    options = normalizeOptions options
-    content = dump content, options
-    yield writeFile filename, content, options
-    return
+writePromise = (filename, content, options = {}) -> co ->
+  filename = yield normalizePath filename unless typeof filename is 'number'
+
+  options = normalizeOptions options
+  content = dump content, options
+
+  yield writeFile filename, content, options
+
+  return
 
 ###
 # Write some content to YAML file
@@ -148,16 +186,19 @@ writePromise = (filename, content, options = {}) ->
 # @param function cb
 ###
 write = (filename, content, options = {}, cb = null) ->
-  if typeof options is 'function'
+  if typeof options is "function"
     [cb, options] = [options, {}]
 
-  __promise = writePromise filename, content, options
-  unless typeof cb is 'function'
-    return __promise
+  # res = writePromise filename, content, options
 
-  __promise
-    .then (content) -> cb null
-    .catch (err) -> cb err
+  # unless typeof cb is "function"
+  #   return res
+
+  # res
+  #   .then (content) -> cb null
+  #   .catch (err) -> cb err
+
+  return fulfill cb, -> writePromise filename, content, options
 
 ###
 # Synchronous version of yaml.write
@@ -177,8 +218,6 @@ module.exports = {
   dump
   read
   readSync
-  readPromise
   write
   writeSync
-  writePromise
 }

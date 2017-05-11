@@ -9,3 +9,5 @@ coffeelint.json
 index.iced
 index.coffee
 npm-debug.log
+yarn-error.log
+yarn.lock

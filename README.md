@@ -27,14 +27,13 @@ Read and parse YAML file.
     * core - same as json schema
 
 ```coffee
-  yaml = require 'node-yaml'
+  yaml = require "node-yaml"
 
-  yaml.read 'path/to/file.yaml',
-    encoding: 'utf8'
-    schema: yaml.schema.defaultSafe,
-    (err, data) ->
-      if err
-        throw err
+  yaml.read "path/to/file.yaml",
+    encoding: "utf8"
+    schema: yaml.schema.defaultSafe, (err, data) ->
+      throw err if err
+
       console.log data
 ```
 
@@ -49,9 +48,9 @@ This method return an instance of **Promise**.
 **DEPRECATED**: Use yaml.read without callback instead
 
 ```coffee
-  {readPromise} = require 'node-yaml'
+  {readPromise} = require "node-yaml"
 
-  readPromise 'path/to/file.yaml'
+  readPromise "path/to/file.yaml"
     .then (data) -> console.log data
 ```
 
@@ -75,13 +74,13 @@ Parse and write YAML to file.
     * core - same as json schema
 
 ```coffee
-  {write} = require 'node-yaml'
+  {write} = require "node-yaml"
 
   data =
-    "foo": "foo"
-    "bar": "bar"
+    foo: "foo"
+    bar: "bar"
 
-  write 'path/to/file.yaml', data, 'utf8', (err) -> throw err if err
+  write "path/to/file.yaml", data, "utf8", (err) -> throw err if err
 ```
 
 ### yaml.writePromise(file, data[, options])
@@ -91,17 +90,17 @@ This method return an instance of **Promise**.
 **DEPRECATED**: Use yaml.write without callback instead
 
 ```coffee
-  {writePromise} = require 'node-yaml'
+  {writePromise} = require "node-yaml"
 
   data =
     foo: "foo"
     bar: "bar"
 
-  writePromise 'path/to/file.yaml', data
+  writePromise "path/to/file.yaml", data
     .then ->
       # Do something.
     .catch (err) ->
-      # I just don't know what went wrong.
+      # I just don"t know what went wrong.
 ```
 
 ### yaml.writeSync(file, data[, options])
@@ -117,7 +116,7 @@ Parse YAML.
   * [object] schema
 
 ```coffee
-  {parse} = require 'node-yaml'
+  {parse} = require "node-yaml"
 
   data = """
     foo: foo
@@ -132,7 +131,7 @@ Parse YAML.
 Convert JSON into YAML.
 
 ```coffee
-  {dump} = require 'node-yaml'
+  {dump} = require "node-yaml"
 
   data =
     foo: "foo"

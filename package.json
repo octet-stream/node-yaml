@@ -14,22 +14,31 @@
   "author": "Nick K.",
   "license": "MIT",
   "scripts": {
+    "make": "node_modules/.bin/coffee -c index.coffee test.coffee",
+    "m": "yarn make",
+    "watch": "node_modules/.bin/coffee -c -w index.coffee test.coffee",
+    "w": "yarn watch",
     "test": "./node_modules/ava/cli.js",
-    "test:devel": "./node_modules/ava/cli.js --watch",
+    "test:dev": "./node_modules/ava/cli.js --watch",
     "t:d": "./node_modules/ava/cli.js --watch"
   },
   "ava": {
     "verbose": true,
-    "files": "test.js"
+    "files": [
+      "./test.js",
+      "!test/**/.js"
+    ]
   },
   "dependencies": {
     "co": "4.6.0",
-    "co-fs": "1.2.0",
-    "js-yaml": "3.6.1"
+    "js-yaml": "3.8.4",
+    "junk": "2.1.0",
+    "promise-fs": "1.2.3"
   },
   "devDependencies": {
-    "ava": "0.15.2",
-    "coffee-script": "1.10.0"
+    "ava": "0.19.1",
+    "coffee-script": "1.12.5",
+    "lodash.isplainobject": "4.0.6"
   },
   "repository": {
     "type": "git",
