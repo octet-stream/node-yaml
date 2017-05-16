@@ -126,7 +126,7 @@ normalizeOptions = (options) ->
 #
 # @api private
 ###
-readYamlFile = (filename, options = {}) -> co ->
+readYamlFile = co.wrap (filename, options = {}) ->
   filename = yield normalizePath filename unless isNumber filename
 
   options = normalizeOptions options
@@ -170,7 +170,7 @@ readSync = (filename, options = {}) ->
 #
 # @api private
 ###
-writeYamlFile = (filename, content, options = {}) -> co ->
+writeYamlFile = co.wrap (filename, content, options = {}) ->
   filename = yield normalizePath filename unless isNumber filename
 
   options = normalizeOptions options
