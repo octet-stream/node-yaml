@@ -10,14 +10,15 @@
     "node",
     "nodejs"
   ],
-  "main": "index.js",
+  "main": "main.js",
   "author": "Nick K.",
   "license": "MIT",
   "scripts": {
-    "make": "node_modules/.bin/coffee -c index.coffee test.coffee",
+    "make": "node_modules/.bin/coffee --no-header -b -c main.coffee test.coffee",
     "m": "yarn make",
-    "watch": "node_modules/.bin/coffee -c -w index.coffee test.coffee",
+    "watch": "node_modules/.bin/coffee --no-header -b -cw main.coffee test.coffee",
     "w": "yarn watch",
+    "make:ci": "node_modules/.bin/coffee --no-header -b -cm main.coffee test.coffee",
     "test": "./node_modules/ava/cli.js",
     "test:dev": "./node_modules/ava/cli.js --watch",
     "t:d": "./node_modules/ava/cli.js --watch"
@@ -37,8 +38,11 @@
   },
   "devDependencies": {
     "ava": "0.19.1",
-    "coffee-script": "1.12.5",
-    "lodash.isplainobject": "4.0.6"
+    "codecov": "2.2.0",
+    "coffee-script": "^1.12.6",
+    "husky": "0.13.3",
+    "lodash.isplainobject": "4.0.6",
+    "nyc": "10.3.2"
   },
   "repository": {
     "type": "git",

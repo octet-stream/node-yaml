@@ -1,3 +1,5 @@
+{isNumber} = require "util"
+
 co = require "co"
 junk = require "junk"
 
@@ -18,6 +20,15 @@ YAML_EXT = [".yaml", ".yml"]
 PARENT_DIRNAME = dirname module.parent.filename
 delete require.cache[__filename]
 
+###
+# Fulfill a promised function as callback-style function if it given
+#   or return a promise
+#
+# @param function cb
+# @param fn – promised function, wrapped into clojure (see yaml.read method)
+#
+# @return Promise|undefined
+###
 fulfill = (cb, fn) ->
   return do fn unless typeof cb is "function"
 
@@ -115,8 +126,8 @@ normalizeOptions = (options) ->
 #
 # @api private
 ###
-readPromise = (filename, options = {}) -> co ->
-  filename = yield normalizePath filename unless typeof filename is "number"
+readYamlFile = (filename, options = {}) -> co ->
+  filename = yield normalizePath filename unless isNumber filename
 
   options = normalizeOptions options
 
@@ -137,17 +148,7 @@ read = (filename, options = {}, cb = null) ->
   if typeof options is "function"
     [cb, options] = [options, {}]
 
-  # res = readPromise filename, options
-  
-  # return res unless typeof cb is "function"
-
-  # onFulfilled = (content) -> cb null, content
-
-  # onRejected = (err) -> cb err
-
-  # res.then
-
-  return fulfill cb, -> readPromise filename, options
+  return fulfill cb, -> readYamlFile filename, options
 
 ###
 # Synchronous version of yaml.read
@@ -156,9 +157,12 @@ read = (filename, options = {}, cb = null) ->
 ###
 readSync = (filename, options = {}) ->
   options = normalizeOptions options
-  filename = normalizePathSync filename unless typeof filename is "number"
+  
+  filename = normalizePathSync filename unless isNumber filename
+  
   content = readFileSync filename, options.encoding
   content = load content, options
+  
   return content
 
 ###
@@ -166,8 +170,8 @@ readSync = (filename, options = {}) ->
 #
 # @api private
 ###
-writePromise = (filename, content, options = {}) -> co ->
-  filename = yield normalizePath filename unless typeof filename is 'number'
+writeYamlFile = (filename, content, options = {}) -> co ->
+  filename = yield normalizePath filename unless isNumber filename
 
   options = normalizeOptions options
   content = dump content, options
@@ -189,16 +193,7 @@ write = (filename, content, options = {}, cb = null) ->
   if typeof options is "function"
     [cb, options] = [options, {}]
 
-  # res = writePromise filename, content, options
-
-  # unless typeof cb is "function"
-  #   return res
-
-  # res
-  #   .then (content) -> cb null
-  #   .catch (err) -> cb err
-
-  return fulfill cb, -> writePromise filename, content, options
+  return fulfill cb, -> writeYamlFile filename, content, options
 
 ###
 # Synchronous version of yaml.write
@@ -207,7 +202,9 @@ writeSync = (filename, content, options = null) ->
   filename = normalizePathSync filename
   options = normalizeOptions options
   content = dump content
+
   writeFileSync filename, content, options.encoding or null
+
   return
 
 module.exports = {

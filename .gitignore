@@ -1,5 +1,8 @@
+.nyc_output
+coverage
 node_modules
 .DS_Store
-index.js
+main.js
 test.js
 npm-debug.log
+*.map
