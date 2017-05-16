@@ -1,6 +1,6 @@
 {
   "name": "node-yaml",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "A wrapper for js-yaml parser",
   "keywords": [
     "wrapper",
@@ -14,6 +14,7 @@
   "author": "Nick K.",
   "license": "MIT",
   "scripts": {
+    "lint": "node_modules/.bin/coffeelint main.coffee",
     "make": "node_modules/.bin/coffee --no-header -b -c main.coffee test.coffee",
     "m": "yarn make",
     "watch": "node_modules/.bin/coffee --no-header -b -cw main.coffee test.coffee",
@@ -21,7 +22,13 @@
     "make:ci": "node_modules/.bin/coffee --no-header -b -cm main.coffee test.coffee",
     "test": "./node_modules/ava/cli.js",
     "test:dev": "./node_modules/ava/cli.js --watch",
-    "t:d": "./node_modules/ava/cli.js --watch"
+    "t:d": "./node_modules/ava/cli.js --watch",
+    "cover": "./node_modules/.bin/nyc yarn test",
+    "report": "yarn make:ci && yarn cover && node_modules/.bin/nyc report --reporter=html",
+    "report:ci": "yarn make:ci && yarn cover && ./node_modules/.bin/nyc report --reporter=lcov",
+    "ci": "yarn report:ci && ./node_modules/.bin/codecov",
+    "precommit": "yarn lint",
+    "prepush": "yarn report"
   },
   "ava": {
     "verbose": true,
@@ -39,7 +46,8 @@
   "devDependencies": {
     "ava": "0.19.1",
     "codecov": "2.2.0",
-    "coffee-script": "^1.12.6",
+    "coffee-script": "1.12.6",
+    "coffeelint": "1.16.0",
     "husky": "0.13.3",
     "lodash.isplainobject": "4.0.6",
     "nyc": "10.3.2"
