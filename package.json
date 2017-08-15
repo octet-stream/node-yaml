@@ -1,6 +1,6 @@
 {
   "name": "node-yaml",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "A wrapper for js-yaml parser",
   "keywords": [
     "wrapper",
@@ -39,18 +39,18 @@
   },
   "dependencies": {
     "co": "4.6.0",
-    "js-yaml": "3.8.4",
+    "js-yaml": "3.9.1",
     "junk": "2.1.0",
     "promise-fs": "1.2.3"
   },
   "devDependencies": {
-    "ava": "0.19.1",
-    "codecov": "2.2.0",
-    "coffee-script": "1.12.6",
+    "ava": "0.21.0",
+    "codecov": "2.3.0",
+    "coffee-script": "1.12.7",
     "coffeelint": "1.16.0",
-    "husky": "0.13.3",
+    "husky": "0.14.3",
     "lodash.isplainobject": "4.0.6",
-    "nyc": "10.3.2"
+    "nyc": "11.1.0"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-{isNumber} = require "util"
+{isNumber, isString} = require "util"
 
 co = require "co"
 junk = require "junk"
@@ -17,8 +17,11 @@ PARSER_SCHEMA =
 
 YAML_EXT = [".yaml", ".yml"]
 
-PARENT_DIRNAME = dirname module.parent.filename
-delete require.cache[__filename]
+if module.parent? and isString module.parent.filename
+  PARENT_DIRNAME = dirname module.parent.filename
+  delete require.cache[__filename]
+else
+  PARENT_DIRNAME = do process.cwd
 
 ###
 # Fulfill a promised function as callback-style function if it given
