@@ -1,10 +1,11 @@
+{dirname, basename, extname, isAbsolute, join, resolve} = require "path"
+{readFileSync, writeFileSync, readdirSync} = require "fs"
+
 co = require "co"
 junk = require "junk"
 
-{readFileSync, writeFileSync, readdirSync} = require "fs"
-{readFile, writeFile, readdir} = require "promise-fs"
-{dirname, basename, extname, isAbsolute, join, resolve} = require "path"
 {parse, load, dump} = yaml = require "js-yaml"
+{readFile, writeFile, readdir} = require "promise-fs"
 
 PARSER_SCHEMA =
   defaultSafe: yaml.DEFAULT_SAFE_SCHEMA
@@ -32,7 +33,7 @@ else
 # @param {function} cb
 # @param {fn} – promised function, wrapped into clojure (see yaml.read method)
 #
-# @return {undefined | Promise<any>}
+# @return {void | Promise<any>}
 *
 * @api private
 ###
@@ -54,7 +55,7 @@ fulfill = (cb, fn) ->
 # 
 # @param {string} filename – Path to YAML file
 #
-# @return {string}
+# @return {Promise<string>}
 #
 # @api private
 ###
@@ -81,7 +82,7 @@ normalizePath = (filename) ->
 # 
 # @param {string} filename - path to YAML file
 #
-# @return {Promise<string>}
+# @return {string}
 #
 # @api private
 ###
@@ -133,7 +134,7 @@ normalizeOptions = (options = {}) ->
 # @param {number | string} filename - path or file descriptor
 # @param {object} [options = null]
 #
-# @return {Promise<string | Buffer>}
+# @return {Promise<object>}
 #
 # @api private
 ###
@@ -144,7 +145,6 @@ readYamlFile = co.wrap (filename, options = {}) ->
 
   content = yield readFile filename, options.encoding
 
-
   return load content, options
 
 ###
@@ -154,8 +154,8 @@ readYamlFile = co.wrap (filename, options = {}) ->
 # @param {number | string} filename - path or file descriptor
 # @param {object} [options = null]
 # @param {function} [cb = null]
-#
-# @return {void | Promise<string>}
+# 
+# @return {void | Promise<object>}
 ###
 read = (filename, options = {}, cb = null) ->
   if typeof options is "function"
@@ -169,7 +169,7 @@ read = (filename, options = {}, cb = null) ->
 # @param {string | number} filename – path or file descriptor
 # @param {string | object} [options = {}]
 # 
-# @return JSON
+# @return {object}
 ###
 readSync = (filename, options = {}) ->
   options = normalizeOptions options
@@ -187,6 +187,8 @@ readSync = (filename, options = {}) ->
 # @param {string | number} – path or file descriptor
 # @paeam {any} content – a file contents
 # @param {string | object} [options = {}]
+# 
+# @return {void | Promise<void>}
 # 
 # @api private
 ###

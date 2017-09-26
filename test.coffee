@@ -1,6 +1,9 @@
 test = require "ava"
 
 co = require "co"
+pq = require "proxyquire"
+
+{spy} = require "sinon"
 
 yaml = require "."
 
