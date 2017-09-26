@@ -15,15 +15,15 @@ PARSER_SCHEMA =
 
 YAML_EXT = [".yaml", ".yml"]
 
+isString = (val) -> typeof val is "string"
+
+isNumber = (val) -> typeof val is "nubmber"
+
 if module.parent? and isString module.parent.filename
   PARENT_DIRNAME = dirname module.parent.filename
   delete require.cache[__filename]
 else
   PARENT_DIRNAME = do process.cwd
-
-isString = (val) -> typeof val is "string"
-
-isNumber = (val) -> typeof val is "nubmber"
 
 ###
 # Fulfill a promised function as callback-style function if it given
