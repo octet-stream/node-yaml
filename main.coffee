@@ -1,5 +1,3 @@
-{isNumber, isString} = require "util"
-
 co = require "co"
 junk = require "junk"
 
@@ -23,14 +21,20 @@ if module.parent? and isString module.parent.filename
 else
   PARENT_DIRNAME = do process.cwd
 
+isString = (val) -> typeof val is "string"
+
+isNumber = (val) -> typeof val is "nubmber"
+
 ###
 # Fulfill a promised function as callback-style function if it given
 #   or return a promise
 #
-# @param function cb
-# @param fn – promised function, wrapped into clojure (see yaml.read method)
+# @param {function} cb
+# @param {fn} – promised function, wrapped into clojure (see yaml.read method)
 #
-# @return Promise|undefined
+# @return {undefined | Promise<any>}
+*
+* @api private
 ###
 fulfill = (cb, fn) ->
   return do fn unless typeof cb is "function"
@@ -48,7 +52,9 @@ fulfill = (cb, fn) ->
 ###
 # Normalize path to YAML file
 # 
-# @param string sPath Path to YAML file
+# @param {string} filename – Path to YAML file
+#
+# @return {string}
 #
 # @api private
 ###
@@ -73,7 +79,9 @@ normalizePath = (filename) ->
 ###
 # Normalize path to YAML file (Synchronously)
 # 
-# @param string sPath Path to YAML file
+# @param {string} filename - path to YAML file
+#
+# @return {Promise<string>}
 #
 # @api private
 ###
@@ -98,13 +106,13 @@ normalizePathSync = (filename) ->
 ###
 # Normalize options
 # 
-# @param string|object options
+# @param {string | object} [options = {null}]
 # 
-# @return object
+# @return {object}
 #
 # @api private
 ###
-normalizeOptions = (options) ->
+normalizeOptions = (options = {}) ->
   unless options?
     return encoding: "utf8", schema: PARSER_SCHEMA.defaultSafe
 
@@ -122,10 +130,10 @@ normalizeOptions = (options) ->
 ###
 # Read YAML file with Promise
 #
-# @param int|string filename - File descriptor or path
-# @param null|object options
+# @param {number | string} filename - path or file descriptor
+# @param {object} [options = null]
 #
-# @return Promise
+# @return {Promise<string | Buffer>}
 #
 # @api private
 ###
@@ -143,9 +151,11 @@ readYamlFile = co.wrap (filename, options = {}) ->
 # Read and parse YAML file
 # Note: Returns an instance of Promise unless callback given
 # 
-# @param int|string filename - File descriptor or path
-# @param null|object options
-# @param function cb
+# @param {number | string} filename - path or file descriptor
+# @param {object} [options = null]
+# @param {function} [cb = null]
+#
+# @return {void | Promise<string>}
 ###
 read = (filename, options = {}, cb = null) ->
   if typeof options is "function"
@@ -155,6 +165,9 @@ read = (filename, options = {}, cb = null) ->
 
 ###
 # Synchronous version of yaml.read
+#
+# @param {string | number} filename – path or file descriptor
+# @param {string | object} [options = {}]
 # 
 # @return JSON
 ###
@@ -170,7 +183,11 @@ readSync = (filename, options = {}) ->
 
 ###
 # Write some content to YAML file with Promise
-#
+# 
+# @param {string | number} – path or file descriptor
+# @paeam {any} content – a file contents
+# @param {string | object} [options = {}]
+# 
 # @api private
 ###
 writeYamlFile = co.wrap (filename, content, options = {}) ->
@@ -186,11 +203,13 @@ writeYamlFile = co.wrap (filename, content, options = {}) ->
 ###
 # Write some content to YAML file
 # Note: Returns an instance of Promise unless callback given
-#
-# @param int|string filename - File descriptor or path
+# 
+# @param int|string filename - path or file descriptor
 # @param object content - File content
 # @param object options
 # @param function cb
+# 
+# @return {void | Promise<void>}
 ###
 write = (filename, content, options = {}, cb = null) ->
   if typeof options is "function"
@@ -200,8 +219,13 @@ write = (filename, content, options = {}, cb = null) ->
 
 ###
 # Synchronous version of yaml.write
+# 
+# @param {string | number} filename – path or file descriptor
+# @param {any} content – a file contents
+# 
+# @return {void}
 ###
-writeSync = (filename, content, options = null) ->
+writeSync = (filename, content, options = {}) ->
   filename = normalizePathSync filename
   options = normalizeOptions options
   content = dump content
@@ -211,6 +235,7 @@ writeSync = (filename, content, options = null) ->
   return
 
 module.exports = {
+  parser: yaml
   Type: yaml.Type
   createSchema: yaml.Schema.create
   schema: PARSER_SCHEMA
