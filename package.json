@@ -2,6 +2,7 @@
   "name": "node-yaml",
   "version": "3.2.0",
   "description": "A wrapper for js-yaml parser",
+  "repository": "octet-stream/node-yaml",
   "keywords": [
     "wrapper",
     "yaml",
@@ -12,6 +13,7 @@
   "author": "Nick K.",
   "license": "MIT",
   "scripts": {
+    "staged": "lint-staged",
     "lint": "coffeelint main.coffee",
     "make": "coffee --no-header -b -c main.coffee test.coffee",
     "m": "npm run make",
@@ -24,9 +26,7 @@
     "cover": "nyc npm run test",
     "report": "npm run make:ci && npm run cover && nyc report --reporter=html",
     "report:ci": "npm run make:ci && npm run cover && nyc report --reporter=lcov",
-    "ci": "npm run report:ci && codecov",
-    "precommit": "npm run lint",
-    "prepush": "npm run report"
+    "ci": "npm run report:ci && codecov"
   },
   "ava": {
     "verbose": true,
@@ -42,21 +42,15 @@
     "promise-fs": "2.1.0"
   },
   "devDependencies": {
-    "ava": "0.22.0",
+    "ava": "1.4.1",
     "codecov": "3.2.0",
     "coffee-script": "1.12.7",
     "coffeelint": "1.16.0",
-    "husky": "0.14.3",
+    "husky": "1.3.1",
+    "lint-staged": "8.1.5",
     "lodash.isplainobject": "4.0.6",
     "nyc": "13.3.0",
     "proxyquire": "2.1.0",
     "sinon": "7.3.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/octet-stream/node-yaml.git"
-  },
-  "bugs": {
-    "url": "https://github.com/octet-stream/node-yaml/issues"
   }
 }
