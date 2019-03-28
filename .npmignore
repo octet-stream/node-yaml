@@ -7,6 +7,7 @@ test.*
 .git
 .gitignore
 .travis.yml
+.editorconfig
 coffeelint.json
 main.coffee
 npm-debug.log
