@@ -52,7 +52,7 @@ fulfill = (cb, fn) ->
 
 ###
 # Normalize path to YAML file
-# 
+#
 # @param {string} filename – Path to YAML file
 #
 # @return {Promise<string>}
@@ -79,7 +79,7 @@ normalizePath = (filename) ->
 
 ###
 # Normalize path to YAML file (Synchronously)
-# 
+#
 # @param {string} filename - path to YAML file
 #
 # @return {string}
@@ -106,9 +106,9 @@ normalizePathSync = (filename) ->
 
 ###
 # Normalize options
-# 
+#
 # @param {string | object} [options = {null}]
-# 
+#
 # @return {object}
 #
 # @api private
@@ -150,11 +150,11 @@ readYamlFile = co.wrap (filename, options = {}) ->
 ###
 # Read and parse YAML file
 # Note: Returns an instance of Promise unless callback given
-# 
+#
 # @param {number | string} filename - path or file descriptor
 # @param {object} [options = null]
 # @param {function} [cb = null]
-# 
+#
 # @return {void | Promise<object>}
 ###
 read = (filename, options = {}, cb = null) ->
@@ -168,28 +168,28 @@ read = (filename, options = {}, cb = null) ->
 #
 # @param {string | number} filename – path or file descriptor
 # @param {string | object} [options = {}]
-# 
+#
 # @return {object}
 ###
 readSync = (filename, options = {}) ->
   options = normalizeOptions options
-  
+
   filename = normalizePathSync filename unless isNumber filename
-  
+
   content = readFileSync filename, options.encoding
   content = load content, options
-  
+
   return content
 
 ###
 # Write some content to YAML file with Promise
-# 
+#
 # @param {string | number} – path or file descriptor
-# @paeam {any} content – a file contents
+# @param {any} content – a file contents
 # @param {string | object} [options = {}]
-# 
+#
 # @return {void | Promise<void>}
-# 
+#
 # @api private
 ###
 writeYamlFile = co.wrap (filename, content, options = {}) ->
@@ -205,12 +205,12 @@ writeYamlFile = co.wrap (filename, content, options = {}) ->
 ###
 # Write some content to YAML file
 # Note: Returns an instance of Promise unless callback given
-# 
+#
 # @param int|string filename - path or file descriptor
 # @param object content - File content
 # @param object options
 # @param function cb
-# 
+#
 # @return {void | Promise<void>}
 ###
 write = (filename, content, options = {}, cb = null) ->
@@ -221,10 +221,10 @@ write = (filename, content, options = {}, cb = null) ->
 
 ###
 # Synchronous version of yaml.write
-# 
+#
 # @param {string | number} filename – path or file descriptor
 # @param {any} content – a file contents
-# 
+#
 # @return {void}
 ###
 writeSync = (filename, content, options = {}) ->
