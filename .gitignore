@@ -1,9 +1,9 @@
+.DS_Store
 .nyc_output
 coverage
 node_modules
-.DS_Store
-main.js
-test.js
 npm-debug.log
-*.map
 yarn-error.log
+*.map
+
+test.mjs

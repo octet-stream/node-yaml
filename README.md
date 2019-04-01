@@ -28,6 +28,18 @@ yaml.read("path/to/file.yaml")
   .catch(err => console.error("Error while reading file:\n\n%s", String(err)))
 ```
 
+Both `read` and `readSync` methods allows to omit file extension:
+
+```js
+// Named imports available as well
+import {readSync} from "node-yaml"
+
+// Will read the content from given path, but also resolve file extension
+// Note that if you have 2 files with the same name,
+// the first matched will be read.
+readSync("path/to/file")
+```
+
 ## API
 
 ### `yaml.read(filename[, options]) -> {Promise<object>}`

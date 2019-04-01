@@ -2,15 +2,13 @@
 coverage
 node_modules
 test
-test.*
 .DS_Store
 .git
 .gitignore
 .travis.yml
 .editorconfig
-coffeelint.json
-main.coffee
 npm-debug.log
 yarn-error.log
 yarn.lock
 *.map
+test.mjs
