@@ -24,7 +24,7 @@ Read and parse YAML file from given path. Takes following arguments:
 
 - **{string | number}** filename – path to file or a file descriptor
 - **{object}** {options = undefined} – reading options
-  + **{string}** options.encoding – an encoding used to read the file
+  + **{string}** [options.encoding = "utf8"] – an encoding used to read the file
   + more options you can find in js-yaml docs in [safeLoad](https://github.com/nodeca/js-yaml#safeload-string---options-) section
 
 ### `yaml.readSync(filename[, options]) -> {object}`
@@ -38,7 +38,7 @@ Write given YAML content to disk. Takes following arguments:
 - **{string | number}** filename – path to file or a file descriptor
 - **{object}** object – a content to write to the file
 - **{object}** {options = undefined} – writing options
-  + **{string}** options.encoding – an encoding used to write to the file
+  + **{string}** [options.encoding = "utf8"] – an encoding used to write to the file
   + more options you can find in js-yaml docs in [safeDump](https://github.com/nodeca/js-yaml#safedump-object---options-) section
 
 ### `yaml.writeSync(filename, object[, options]) -> {Promise<void>}`
