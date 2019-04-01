@@ -57,7 +57,7 @@ Read and parse YAML file from given path. Takes following arguments:
 
 Synchronous version of **yaml.read**
 
-##### `yaml.write(filename, object[, options]) -> {void}`
+##### `yaml.write(filename, object[, options]) -> {Promise<void>}`
 
 Write given YAML content to disk. Takes following arguments:
 
@@ -67,6 +67,6 @@ Write given YAML content to disk. Takes following arguments:
   + **{string}** [options.encoding = "utf8"] – an encoding used to write to the file
   + more options you can find in js-yaml docs in [safeDump](https://github.com/nodeca/js-yaml#safedump-object---options-) section
 
-##### `yaml.writeSync(filename, object[, options]) -> {Promise<void>}`
+##### `yaml.writeSync(filename, object[, options]) -> {void}`
 
 Synchronous version of **yaml.write**
