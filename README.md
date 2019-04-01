@@ -2,6 +2,9 @@
 
 A wrapper for [js-yaml](https://github.com/nodeca/js-yaml) parser
 
+This documentation is actual for next major version of the library.
+If you want the documentation of current stable version, please check out the [3.x](https://github.com/octet-stream/node-yaml/tree/3.x) branch.
+
 ## Installation
 
 You can install this module from Yarn:
