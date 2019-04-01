@@ -1,4 +1,4 @@
 {
-  "main.coffee": "coffeelint",
-  "test.coffee": "coffeelint"
+  "lib/**/*.js": "eslint",
+  "test/**/*.js": "eslint"
 }

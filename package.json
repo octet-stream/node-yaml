@@ -13,26 +13,18 @@
   "author": "Nick K.",
   "license": "MIT",
   "scripts": {
-    "staged": "lint-staged",
-    "lint": "coffeelint main.coffee",
-    "make": "coffee --no-header -b -c main.coffee test.coffee",
-    "m": "npm run make",
-    "watch": "coffee --no-header -b -cw main.coffee test.coffee",
-    "w": "npm run watch",
-    "make:ci": "coffee --no-header -b -cm main.coffee test.coffee",
     "test": "ava",
-    "test:dev": "ava -w",
-    "t:d": "npm run test dev",
-    "cover": "nyc npm run test",
-    "report": "npm run make:ci && npm run cover && nyc report --reporter=html",
-    "report:ci": "npm run make:ci && npm run cover && nyc report --reporter=lcov",
+    "staged": "lint-staged",
+    "eslint": "eslint lib test",
+    "coverage": "nyc npm run test",
+    "report": "npm run make:ci && npm run coverage && nyc report --reporter=html",
+    "report:ci": "npm run make:ci && npm run coverage && nyc report --reporter=lcov",
     "ci": "npm run report:ci && codecov"
   },
   "ava": {
-    "verbose": true,
     "files": [
-      "./test.js",
-      "!test/**/.js"
+      "test/**/*.js",
+      "!test/fixture/**"
     ]
   },
   "dependencies": {

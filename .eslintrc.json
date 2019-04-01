@@ -1,4 +1,11 @@
 {
   "plugins": ["ava"],
-  "extends": ["@octetstream", "plugin:ava/recommended"]
+  "extends": ["@octetstream", "plugin:ava/recommended"],
+  "rules": {
+    "ava/no-ignored-test-files": ["error", {
+      "files": [
+        "src/test/unit/**/*.js"
+      ]
+    }]
+  }
 }
