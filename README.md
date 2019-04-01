@@ -10,7 +10,7 @@ If you want the documentation of current stable version, please check out the [3
 You can install this module from Yarn:
 
 ```
-  yarn add node-yaml js-yaml
+yarn add node-yaml js-yaml
 ```
 
 Or using NPM:
@@ -19,7 +19,7 @@ Or using NPM:
 npm install node-yaml js-yaml
 ```
 
-### Usage
+## Usage
 
 Let's read some file from given path using node-yaml:
 
@@ -45,7 +45,7 @@ readSync("path/to/file")
 
 ## API
 
-### `yaml.read(filename[, options]) -> {Promise<object>}`
+##### `yaml.read(filename[, options]) -> {Promise<object>}`
 
 Read and parse YAML file from given path. Takes following arguments:
 
@@ -54,11 +54,11 @@ Read and parse YAML file from given path. Takes following arguments:
   + **{string}** [options.encoding = "utf8"] – an encoding used to read the file
   + more options you can find in js-yaml docs in [safeLoad](https://github.com/nodeca/js-yaml#safeload-string---options-) section
 
-### `yaml.readSync(filename[, options]) -> {object}`
+##### `yaml.readSync(filename[, options]) -> {object}`
 
 Synchronous version of **yaml.read**
 
-### `yaml.write(filename, object[, options]) -> {void}`
+##### `yaml.write(filename, object[, options]) -> {void}`
 
 Write given YAML content to disk. Takes following arguments:
 
@@ -68,6 +68,6 @@ Write given YAML content to disk. Takes following arguments:
   + **{string}** [options.encoding = "utf8"] – an encoding used to write to the file
   + more options you can find in js-yaml docs in [safeDump](https://github.com/nodeca/js-yaml#safedump-object---options-) section
 
-### `yaml.writeSync(filename, object[, options]) -> {Promise<void>}`
+##### `yaml.writeSync(filename, object[, options]) -> {Promise<void>}`
 
 Synchronous version of **yaml.write**
