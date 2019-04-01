@@ -4,105 +4,43 @@ A wrapper for [js-yaml](https://github.com/nodeca/js-yaml) parser
 
 ## Installation
 
-You can install this module using NPM:
+You can install this module from Yarn:
 
-```bash
-  npm install --save node-yaml
+```
+  yarn add node-yaml js-yaml
+```
+
+Or using NPM:
+
+```
+npm install node-yaml js-yaml
 ```
 
 ## API
 
-### yaml.read(file[, options, callback])
+### `yaml.read(filename[, options]) -> {Promise<object>}`
 
-Read and parse YAML file.
+Read and parse YAML file from given path. Takes following arguments:
 
-* file Path to file or file descriptor
-* null|string|object Options:
-  * [string] encoding (default = utf8)
-  * [object] schema - specifies a schema to use. More information about this option [here](https://github.com/nodeca/js-yaml#safeload-string---options-) (default - defaultSafe).
-    * defaultSafe - all supported YAML types, without unsafe ones
-    * defaultFull - all supported YAML types
-    * failsafe - only strings, arrays and plain objects
-    * json - all JSON-supported types
-    * core - same as json schema
+- **{string | number}** filename – path to file or a file descriptor
+- **{object}** {options = undefined} – reading options
+  + **{string}** options.encoding – an encoding used to read the file
+  + more options you can find in js-yaml docs in [safeLoad](https://github.com/nodeca/js-yaml#safeload-string---options-) section
 
-```coffee
-  yaml = require "node-yaml"
+### `yaml.readSync(filename[, options]) -> {object}`
 
-  yaml.read "path/to/file.yaml",
-    encoding: "utf8"
-    schema: yaml.schema.defaultSafe, (err, data) ->
-      throw err if err
+Synchronous version of **yaml.read**
 
-      console.log data
-```
+### `yaml.write(filename, object[, options]) -> {void}`
 
-**Note**: You also can use path without file extension (only for yaml.read and yaml.readSync).
+Write given YAML content to disk. Takes following arguments:
 
-**Note**: yaml.schema.defaultSafe schema used by default because is that recomended loading way.
+- **{string | number}** filename – path to file or a file descriptor
+- **{object}** object – a content to write to the file
+- **{object}** {options = undefined} – writing options
+  + **{string}** options.encoding – an encoding used to write to the file
+  + more options you can find in js-yaml docs in [safeLoad](https://github.com/nodeca/js-yaml#safeload-string---options-) section
 
-### yaml.readSync(file[, options])
+### `yaml.writeSync(filename, object[, options]) -> {Promise<void>}`
 
-Synchronous version of **yaml.read**. Return the contents of the **file**
-
-### yaml.write(file, data[, options, callback])
-
-Parse and write YAML to file.
-
-* int|string file - Path to file or file descriptor
-* object data - Some data to write
-* null|string|object options:
-  * [string] encoding (default = utf8)
-  * [object] schema - specifies a schema to use. More information about this option [here](https://github.com/nodeca/js-yaml#safeload-string---options-) (default - defaultSafe).
-    * defaultSafe - all supported YAML types, without unsafe ones
-    * defaultFull - all supported YAML types
-    * failsafe - only strings, arrays and plain objects
-    * json - all JSON-supported types
-    * core - same as json schema
-
-```coffee
-  {write} = require "node-yaml"
-
-  data =
-    foo: "foo"
-    bar: "bar"
-
-  write "path/to/file.yaml", data, "utf8", (err) -> throw err if err
-```
-
-### yaml.writeSync(file, data[, options])
-
-Synchronous version of **yaml.write**.
-
-### yaml.parse(string[, options])
-
-Parse YAML.
-
-* string - YAML string to parse
-* [object] options:
-  * [object] schema
-
-```coffee
-  {parse} = require "node-yaml"
-
-  data = """
-    foo: foo
-    bar: bar
-  """
-
-  console.log parse data
-```
-
-### yaml.dump(json[, options])
-
-Convert JSON into YAML.
-
-```coffee
-  {dump} = require "node-yaml"
-
-  data =
-    foo: "foo"
-    bar: "bar"
-
-  console.log dump data
-```
+Synchronous version of **yaml.write**
