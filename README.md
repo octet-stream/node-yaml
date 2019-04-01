@@ -39,7 +39,7 @@ Write given YAML content to disk. Takes following arguments:
 - **{object}** object – a content to write to the file
 - **{object}** {options = undefined} – writing options
   + **{string}** options.encoding – an encoding used to write to the file
-  + more options you can find in js-yaml docs in [safeLoad](https://github.com/nodeca/js-yaml#safeload-string---options-) section
+  + more options you can find in js-yaml docs in [safeDump](https://github.com/nodeca/js-yaml#safedump-object---options-) section
 
 ### `yaml.writeSync(filename, object[, options]) -> {Promise<void>}`
 
