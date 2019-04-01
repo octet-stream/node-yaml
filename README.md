@@ -34,13 +34,12 @@ yaml.read("path/to/file.yaml")
 Both `read` and `readSync` methods allows to omit file extension:
 
 ```js
-// Named imports available as well
-import {readSync} from "node-yaml"
+import yaml from "node-yaml"
 
 // Will read the content from given path, but also resolve file extension
 // Note that if you have 2 files with the same name,
 // the first matched will be read.
-readSync("path/to/file")
+yaml.readSync("path/to/file")
 ```
 
 ## API
