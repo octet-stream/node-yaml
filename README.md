@@ -16,6 +16,18 @@ Or using NPM:
 npm install node-yaml js-yaml
 ```
 
+### Usage
+
+Let's read some file from given path using node-yaml:
+
+```js
+import yaml from "node-yaml"
+
+yaml.read("path/to/file.yaml")
+  .then(res => console.log("File content:\n\n%s", JSON.stringify(res, null, 2)))
+  .catch(err => console.error("Error while reading file:\n\n%s", String(err)))
+```
+
 ## API
 
 ### `yaml.read(filename[, options]) -> {Promise<object>}`
