@@ -17,8 +17,8 @@
     "staged": "lint-staged",
     "eslint": "eslint lib test",
     "coverage": "nyc npm run test",
-    "report": "npm run make:ci && npm run coverage && nyc report --reporter=html",
-    "report:ci": "npm run make:ci && npm run coverage && nyc report --reporter=lcov",
+    "report": "npm run coverage && nyc report --reporter=html",
+    "report:ci": "npm run coverage && nyc report --reporter=lcov",
     "ci": "npm run report:ci && codecov"
   },
   "ava": {
