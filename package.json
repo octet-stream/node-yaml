@@ -9,7 +9,7 @@
     "parser",
     "serializer"
   ],
-  "main": "main.js",
+  "main": "lib/node-yaml",
   "author": "Nick K.",
   "license": "MIT",
   "scripts": {
