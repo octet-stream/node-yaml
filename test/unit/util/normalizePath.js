@@ -32,9 +32,3 @@ test("Returns given path when can't match any file", async t => {
 
   t.is(actual, join(fixtures, "foo"))
 })
-
-test("Throws an error when unsupported file extension given", async t => {
-  const path = join("read", "file.unknown")
-
-  await t.throwsAsync(normalizePath(fixtures, path))
-})

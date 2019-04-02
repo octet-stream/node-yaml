@@ -32,11 +32,3 @@ test("Returns given path when can't match any file", t => {
 
   t.is(actual, join(fixtures, "foo"))
 })
-
-test("Throws an error when unsupported file extension given", t => {
-  const path = join("read", "file.unknown")
-
-  const trap = () => normalizePathSync(fixtures, path)
-
-  t.throws(trap)
-})
