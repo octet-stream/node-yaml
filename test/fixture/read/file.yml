@@ -1,7 +1,8 @@
-unicode: "Sosa did fine.\u263A"
-control: "\b1998\t1999\t2000\n"
-hex esc: "\x0d\x0a is \r\n"
-
-single: '"Howdy!" he cried.'
-quoted: ' # Not a ''comment''.'
-tie-fighter: '|\-*-/|'
+subject: Can you beleive it, Trixie?
+sender: Glim Glam
+recipient: The Great and Powerful Trixie
+text: I beat Twilight Sparkle and all I got was this lousy t-shirt
+attachments:
+  - name: photo.png
+    path: /tmp/photo.png
+    mime: image/png
