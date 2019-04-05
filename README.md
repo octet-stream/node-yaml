@@ -2,6 +2,11 @@
 
 A wrapper for [js-yaml](https://github.com/nodeca/js-yaml) parser
 
+[![dependencies Status](https://david-dm.org/octet-stream/node-yaml/status.svg)](https://david-dm.org/octet-stream/node-yaml)
+[![devDependencies Status](https://david-dm.org/octet-stream/node-yaml/dev-status.svg)](https://david-dm.org/octet-stream/node-yaml?type=dev)
+[![Build Status](https://travis-ci.org/octet-stream/node-yaml.svg?branch=master)](https://travis-ci.org/octet-stream/node-yaml)
+[![Code Coverage](https://codecov.io/github/octet-stream/node-yaml/coverage.svg?branch=master)](https://codecov.io/github/octet-stream/node-yaml?branch=master)
+
 This documentation is actual for next major version of the library.
 If you want the documentation of current stable version, please check out the [3.x](https://github.com/octet-stream/node-yaml/tree/3.x) branch.
 
