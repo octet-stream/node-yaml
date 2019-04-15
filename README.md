@@ -26,25 +26,25 @@ npm install node-yaml js-yaml
 
 ## Usage
 
-Let's read some file from given path using node-yaml:
+1. Let's read some file from given path using node-yaml:
 
 ```js
-import yaml from "node-yaml"
+import {read} from "node-yaml"
 
-yaml.read("path/to/file.yaml")
+read("path/to/file.yaml")
   .then(res => console.log("File content:\n\n%s", JSON.stringify(res, null, 2)))
   .catch(err => console.error("Error while reading file:\n\n%s", String(err)))
 ```
 
-Both `read` and `readSync` methods allows to omit file extension:
+2. Both `read` and `readSync` methods allows to omit file extension:
 
 ```js
-import yaml from "node-yaml"
+import {readSync} from "node-yaml"
 
 // Will read the content from given path, but also resolve file extension
 // Note that if you have 2 files with the same name,
 // the first matched will be read.
-yaml.readSync("path/to/file")
+readSync("path/to/file")
 ```
 
 ## API
