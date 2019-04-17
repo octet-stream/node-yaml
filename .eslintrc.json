@@ -1,7 +1,10 @@
 {
-  "plugins": ["ava"],
+  "plugins": ["ava", "markdown"],
   "extends": ["@octetstream", "plugin:ava/recommended"],
   "rules": {
+    "import/no-unresolved": ["error", {
+      "ignore": ["node-yaml"]
+    }],
     "ava/no-ignored-test-files": ["error", {
       "files": [
         "test/unit/**/*.js"
