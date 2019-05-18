@@ -1,7 +1,9 @@
 const {join} = require("path")
 
-const test = require("ava")
+const {spy} = require("sinon")
 
+const test = require("ava")
+const pq = require("proxyquire")
 const fs = require("promise-fs")
 const yaml = require("js-yaml")
 
@@ -29,4 +31,40 @@ test("yaml.read() takes file descriptor to read it from disk", async t => {
   t.deepEqual(actual, expected)
 
   await fs.close(fd)
+})
+
+test("yaml.write() writes file to disk", async t => {
+  const writeFile = spy(() => Promise.resolve(undefined))
+
+  const {write} = pq("../../lib/node-yaml", {
+    "promise-fs": {
+      writeFile
+    }
+  })
+
+  const expected = yaml.safeDump({key: "value"})
+
+  await write(join(fixtures, "write/file.yml"), {key: "value"})
+
+  const [, actual] = writeFile.firstCall.args
+
+  t.is(actual, expected)
+})
+
+test("yaml.write() use file descriptor to safe the content", async t => {
+  const writeFile = spy(() => Promise.resolve(undefined))
+
+  const {write} = pq("../../lib/node-yaml", {
+    "promise-fs": {
+      writeFile
+    }
+  })
+
+  const fd = 42
+
+  await write(fd, {key: "value"})
+
+  const [actual] = writeFile.firstCall.args
+
+  t.is(actual, fd)
 })
