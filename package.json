@@ -37,14 +37,14 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "3.0.0",
-    "ava": "1.4.1",
+    "ava": "2.0.0",
     "codecov": "3.5.0",
     "eslint": "5.16.0",
-    "eslint-plugin-ava": "6.0.0",
+    "eslint-plugin-ava": "7.0.0",
     "eslint-plugin-markdown": "1.0.0",
-    "husky": "2.3.0",
+    "husky": "2.4.0",
     "js-yaml": "3.13.1",
-    "lint-staged": "8.1.7",
+    "lint-staged": "8.2.0",
     "nyc": "14.1.1",
     "proxyquire": "2.1.0",
     "sinon": "7.3.2"
