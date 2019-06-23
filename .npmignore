@@ -6,6 +6,9 @@ test
 .git
 .gitignore
 .travis.yml
+.eslintrc.json
+.huskyrc.json
+.lintstagedrc
 .editorconfig
 npm-debug.log
 yarn-error.log
