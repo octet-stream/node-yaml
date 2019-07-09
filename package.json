@@ -30,21 +30,21 @@
   "dependencies": {
     "co": "4.6.0",
     "junk": "3.1.0",
-    "promise-fs": "2.1.0"
+    "promise-fs": "2.1.1"
   },
   "peerDependencies": {
     "js-yaml": "^3.13.x"
   },
   "devDependencies": {
-    "@octetstream/eslint-config": "3.0.0",
-    "ava": "2.1.0",
+    "@octetstream/eslint-config": "3.1.0",
+    "ava": "2.2.0",
     "codecov": "3.5.0",
-    "eslint": "5.16.0",
+    "eslint": "6.0.1",
     "eslint-plugin-ava": "7.1.0",
     "eslint-plugin-markdown": "1.0.0",
-    "husky": "2.4.1",
+    "husky": "3.0.0",
     "js-yaml": "3.13.1",
-    "lint-staged": "8.2.1",
+    "lint-staged": "9.1.0",
     "nyc": "14.1.1",
     "proxyquire": "2.1.0",
     "sinon": "7.3.2"
