@@ -37,7 +37,7 @@
   "devDependencies": {
     "@octetstream/eslint-config": "4.0.0",
     "ava": "2.4.0",
-    "codecov": "3.6.1",
+    "codecov": "3.7.1",
     "eslint": "6.6.0",
     "eslint-plugin-ava": "9.0.0",
     "eslint-plugin-markdown": "1.0.1",
